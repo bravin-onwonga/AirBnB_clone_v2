@@ -120,7 +120,6 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
 
         my_list = self._split(args)
-        my_dict = {}
         class_name = my_list[0]
 
         if not class_name:

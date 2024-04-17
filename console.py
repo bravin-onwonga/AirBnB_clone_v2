@@ -131,9 +131,12 @@ class HBNBCommand(cmd.Cmd):
 
         for i in range(1, len(my_list)):
             new_list = my_list[i].split('=')
+            key, value = new_list[0:]
             value = new_list[1].replace("'", "")
             value = value.replace("_", " ")
-            new_instance.__dict__[new_list[0]] = value
+            if (key in self.types):
+                value = self.types[key](value)
+                new_instance.__dict__[key] = value
 
         storage.save()
         print(new_instance.id)

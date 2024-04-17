@@ -67,8 +67,9 @@ class DBStorage:
 
     def delete(self, obj=None):
         if (obj):
+            key = obj.__class__ + '.' + obj.id
             cls_name = obj.__class__
-            obj_del = self.__session.query(cls_name).filter()
+            obj_del = self.__session.query(cls_name).filter(cls_name.id == key)
 
     def reload(self):
         pass

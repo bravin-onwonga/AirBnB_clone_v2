@@ -2,7 +2,7 @@
 """This module defines a class User"""
 from models.base_model import BaseModel
 from models.base_model import Base
-from mysqlalchemy import Column, String, ForeignKeys
+from mysqlalchemy import Column, String
 
 
 class User(BaseModel):

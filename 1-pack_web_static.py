@@ -12,6 +12,10 @@ from datetime import datetime
 def do_pack(c):
     """
     Function that connect to the servers and archives the content
+
+    Returns
+        - path to file if successful
+        - otherwise None
     """
 
     time_now = datetime.now().strftime("%Y%m%d%H%M%S")

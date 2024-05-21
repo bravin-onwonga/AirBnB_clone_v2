@@ -7,6 +7,7 @@ import os
 from fabric import task
 from datetime import datetime
 
+
 @task
 def do_pack(c):
     """
@@ -19,9 +20,10 @@ def do_pack(c):
 
     if res.ok:
         path = os.path.getsize(filename)
-        return(path)
+        return (path)
     else:
         return None
+
 
 if __name__ == "__main__":
     from fabric import Connection

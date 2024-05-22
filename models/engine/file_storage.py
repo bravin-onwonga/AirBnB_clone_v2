@@ -12,17 +12,16 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         if (cls):
             new_dict = {}
-            for key in FileStorage.__objects:
-                my_lst = key.split('.')
-                if my_lst[0] == cls.__name__:
-                    new_dict.update({key: FileStorage.__objects[key]})
+            for key, value in FileStorage.__objects.items():
+                if key.split('.')[0] == cls.__name__:
+                    new_dict[key] = value
             return new_dict
         else:
             return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
-        self.all().update({obj.to_dict()['__class__'] + '.' + obj.id: obj})
+        FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
     def save(self):
         """Saves storage dictionary to file"""
@@ -64,6 +63,7 @@ class FileStorage:
             if key in FileStorage.__objects:
                 del (FileStorage.__objects[key])
                 self.save()
+        return
 
     def close(self):
         """Calls reload"""

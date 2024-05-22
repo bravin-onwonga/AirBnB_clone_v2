@@ -59,7 +59,7 @@ class DBStorage:
     def new(self, obj):
         """Adds a new obj to a current storage"""
         my_dict = obj.to_dict()
-        self.__session.add_all([obj.__cls__(my_dict)])
+        self.__session.add_all([obj.__class__(my_dict)])
 
     def save(self):
         """Commit all our transaction to the DB"""

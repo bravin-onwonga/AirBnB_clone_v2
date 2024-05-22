@@ -5,6 +5,7 @@ import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -27,7 +28,7 @@ class State(BaseModel, Base):
         def cities(self):
             """Getter method for cities"""
             my_lst = []
-            curr_cities = models.storage.all()
+            curr_cities = models.storage.all(City)
             for city in curr_cities.values():
                 if city.state_id == self.id:
                     my_lst.append(city)

@@ -17,8 +17,10 @@ class BaseModel:
 
     if storage_type == "db":
         id = Column(String(60), primary_key=True, unique=True, nullable=False)
-        created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-        updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+        created_at = Column(
+            DateTime, nullable=False, default=datetime.utcnow())
+        updated_at = Column(
+            DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
@@ -53,7 +55,7 @@ class BaseModel:
         my_dict = {}
         my_dict.update(self.__dict__)
         my_dict.update({'__class__':
-                          (str(type(self)).split('.')[-1]).split('\'')[0]})
+                        (str(type(self)).split('.')[-1]).split('\'')[0]})
         my_dict['created_at'] = self.created_at.isoformat()
         my_dict['updated_at'] = self.updated_at.isoformat()
         if (my_dict.get('_sa_instance_state')):

@@ -2,14 +2,14 @@
 """ This model defines our CRUD operations on data in our db """
 
 import os
-from sqlalchmey import create_engine
+from sqlalchemy import create_engine
 from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
-from models.base_model import Base
+from models.base_model import BaseModel, Base
 
 
 class DBStorage:
@@ -25,12 +25,11 @@ class DBStorage:
         passwd = os.environ["HBNB_MYSQL_PWD"]
         host = os.environ["HBNB_MYSQL_HOST"]
         dbName = os.environ["HBNB_MYSQL_DB"]
-        env = os.environ["HBNB_ENV"]
 
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
             username, passwd, host, dbName), pool_pre_ping=True)
 
-        if (env == "test"):
+        if os.getenv("HBNB_ENV") == "test":
             tables = self.__engine.tablenames()
 
             for table in tables:
@@ -77,9 +76,8 @@ class DBStorage:
 
     def reload(self):
         """Established our session"""
-        from sqlalchmey import MetaData
         from sqlalchemy.orm import sessionmaker, scoped_session
-        Base.MetaData.create_all(self.__engine)
+        Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = scoped_session(session_factory)
 

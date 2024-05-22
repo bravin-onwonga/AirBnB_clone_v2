@@ -13,7 +13,7 @@ def hello():
     """
     Simple flask setup to display Hello HBNB
     """
-    return ("Hello HBNB")
+    return ("Hello HBNB!")
 
 if __name__ == "__main__":
     app.run(host='localhost', port=5000, debug=True)

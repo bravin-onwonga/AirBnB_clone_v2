@@ -29,8 +29,8 @@ class DBStorage:
         dbName = os.environ["HBNB_MYSQL_DB"]
         env = os.environ["HBNB_ENV"]
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format
-                           (username, passwd, host, dbName), pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
+            username, passwd, host, dbName), pool_pre_ping=True)
 
         if (env == "test"):
             tables = self.__engine.tablenames()
@@ -49,7 +49,7 @@ class DBStorage:
                 my_dict.update({key: value})
         else:
             for item in self.cls_lst:
-                query = self.__session.query(item).all()
+                objs = self.__session.query(item).all()
 
                 for obj in objs:
                     key = cls.__name__ + '.' + obj.id
@@ -73,3 +73,7 @@ class DBStorage:
 
     def reload(self):
         pass
+
+    def close(self):
+        """Calls remove on session"""
+        self.__session.remove()

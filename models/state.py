@@ -22,6 +22,7 @@ class State(BaseModel, Base):
         super().__init__(*args, **kwargs)
 
     if models.my_env != "db":
+        @property
         def cities(self):
             my_lst = []
             curr_cities = models.storage.all()

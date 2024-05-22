@@ -35,8 +35,9 @@ def route_vars(text):
     return ("C {}".format(text))
 
 
+@app.route("/python/", defaults={"text": "is cool"})
 @app.route("/python/<text>", strict_slashes=False)
-def route_python(text="is cool"):
+def route_python(text):
     """
     Simple route that accepts a string
     Returns:

@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -140,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
                 value = self.types[key](value)
                 new_instance.__dict__[key] = value
 
-        storage.save()
+        storage.new(new_instance)
         print(new_instance.id)
         storage.save()
 

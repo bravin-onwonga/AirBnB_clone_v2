@@ -54,7 +54,7 @@ def int_var(n):
     Returns:
         string with _ instead of space
     """
-    return (str(n))
+    return ("{} is a number".format(str(n)))
 
 
 if __name__ == "__main__":

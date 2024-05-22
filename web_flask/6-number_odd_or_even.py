@@ -68,5 +68,16 @@ def using_template(n):
     return render_template("5-number.html", n=n)
 
 
+@app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
+def off_or_even(n):
+    from flask import render_template
+    """
+    Simple route that accepts a string
+    Returns:
+        string with _ instead of space
+    """
+    return render_template("6-number_odd_or_even.html", n=n)
+
+
 if __name__ == "__main__":
     app.run(host='localhost', port=5000, debug=True)

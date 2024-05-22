@@ -50,13 +50,15 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__':
+        my_dict = {}
+        my_dict.update(self.__dict__)
+        my_dict.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        return dictionary
+        my_dict['created_at'] = self.created_at.isoformat()
+        my_dict['updated_at'] = self.updated_at.isoformat()
+        if (my_dict.get('_sa_instance_state')):
+            my_dict.pop('_sa_instance_state')
+        return my_dict
 
     def delete(self):
         """ Calls the storage method delete"""

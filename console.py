@@ -119,26 +119,29 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
 
-        my_list = self._split(args)
-        class_name = my_list[0]
+        args_lst = args.split(" ")
+        class_name = args_lst[0]
 
         if not class_name:
             print("** class name missing **")
             return
-        elif class_name not in HBNBCommand.classes:
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
         new_instance = HBNBCommand.classes[class_name]()
 
-        for i in range(1, len(my_list)):
-            new_list = my_list[i].split('=')
-            key, value = new_list[0:]
-            value = new_list[1].replace("'", "")
-            value = value.replace("_", " ")
-            if (key in self.types):
-                value = self.types[key](value)
-                new_instance.__dict__[key] = value
+        for item in args_lst[1:]:
+            if '=' in item:
+                key, value = item.split('=', 1)
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.strip('"').replace('_', ' ')
+                elif '.' in value:
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, key, value)
 
         storage.new(new_instance)
         print(new_instance.id)
@@ -342,3 +345,7 @@ class HBNBCommand(cmd.Cmd):
         Return a dict"""
         import shlex
         return shlex.split(line)
+
+
+if __name__ == "__main__":
+    HBNBCommand().cmdloop()

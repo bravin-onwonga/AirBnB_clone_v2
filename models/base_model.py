@@ -5,11 +5,13 @@ import os
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, String, DateTime
-from datetime import datetime
-
-Base = declarative_base()
 
 storage_type = os.environ["HBNB_TYPE_STORAGE"]
+
+if storage_type == 'db':
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
@@ -23,7 +25,7 @@ class BaseModel:
             DateTime, nullable=False, default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if not kwargs:
             from models import storage
             self.id = str(uuid.uuid4())

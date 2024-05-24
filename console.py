@@ -187,6 +187,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """ Destroys a specified object """
+        import os
+
         new = args.partition(" ")
         c_name = new[0]
         c_id = new[2]
@@ -207,11 +209,23 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
 
-        try:
-            del (storage.all()[key])
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
+        type_storage = os.environ["HBNB_TYPE_STORAGE"]
+
+        if type_storage != 'db':
+            try:
+                del (storage.all()[key])
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
+        else:
+            try:
+                cls_name = HBNBCommand.classes[c_name]
+                obj = storage.__session.query(cls_name).filter(
+                    cls_name.id == key)
+                storage.delete(obj)
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
 
     def help_destroy(self):
         """ Help information for the destroy command """

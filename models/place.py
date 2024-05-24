@@ -46,9 +46,9 @@ class Place(BaseModel, Base):
 
             my_dict = storage.all(Review)
 
-            for value in my_dict.items():
-                if value.get('place_id') == self.id:
-                    reviews_lst.append(value)
+            for review in my_dict.values():
+                if review.get('place_id') == self.id:
+                    reviews_lst.append(review)
 
             return reviews_lst
 

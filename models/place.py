@@ -1,10 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+import os
 import models
-from models.base_model import Base, BaseModel
-from sqlalchemy import Column, Float, Integer, String, ForeignKey
+from models.base_model import BaseModel, Base
+from sqlalchemy import Column, Float, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
+
+
+
+if os.environ["HBNB_TYPE_STORAGE"] == "db":
+    place_amenity = Table('place_amenity', Base.metadata,
+        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+    )
 
 
 class Place(BaseModel, Base):
@@ -23,6 +33,7 @@ class Place(BaseModel, Base):
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
         review = relationship("Review", backref="place", cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary="place_amenity", back_populates="place_amenities", viewonly=False)
 
     else:
         city_id = ""
@@ -36,6 +47,10 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    def __init__(self, *args, **kwargs):
+        """Insantiates instance by calling parent class"""
+        super().__init__(*args, **kwargs)
 
     if models.my_env != 'db':
         @property
@@ -52,7 +67,25 @@ class Place(BaseModel, Base):
 
             return reviews_lst
 
+        @property
+        def amenities(self):
+            """Getter function for amenities"""
+            from models import storage
+            amenities_lst = []
 
-    def __init__(self, *args, **kwargs):
-        """Insantiates instance by calling parent class"""
-        super().__init__(*args, **kwargs)
+            my_lst = self.amenity_ids
+
+            my_dict = storage.all(Amenity)
+
+            for item in my_dict.values():
+                if item.id in my_lst:
+                    amenities_lst.append(item)
+                    my_lst.remove[item.id]
+
+            return amenities_lst
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            """setter method for amenities_ids"""
+            if (obj and isinstance(obj, Amenity)):
+                self.amenity_ids.append(obj.id)

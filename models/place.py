@@ -4,7 +4,7 @@ import models
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, Float, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models.city import City
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -22,6 +22,7 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
+        review = relationship("Review", backref="place", cascade="all, delete-orphan")
 
     else:
         city_id = ""
@@ -35,6 +36,22 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
+
+    if models.my_env != 'db':
+        @property
+        def reviews(self):
+            """Getter method for all reviews linked to a place"""
+            from models import storage
+            reviews_lst = []
+
+            my_dict = storage.all(Review)
+
+            for value in my_dict.items():
+                if value.get('place_id') == self.id:
+                    reviews_lst.append(value)
+
+            return reviews_lst
+
 
     def __init__(self, *args, **kwargs):
         """Insantiates instance by calling parent class"""

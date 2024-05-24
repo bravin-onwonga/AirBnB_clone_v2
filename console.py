@@ -342,5 +342,3 @@ class HBNBCommand(cmd.Cmd):
         Return a dict"""
         import shlex
         return shlex.split(line)
-
-

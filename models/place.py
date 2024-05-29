@@ -9,11 +9,13 @@ from models.review import Review
 from models.amenity import Amenity
 
 
-
 if os.environ["HBNB_TYPE_STORAGE"] == "db":
-    place_amenity = Table('place_amenity', Base.metadata,
-        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+    place_amenity = Table(
+        'place_amenity', Base.metadata,
+        Column('place_id', String(60), ForeignKey('places.id'),
+               primary_key=True, nullable=False),
+        Column('amenity_id', String(60), ForeignKey('amenities.id'),
+               primary_key=True, nullable=False)
     )
 
 
@@ -32,8 +34,11 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float, nullable=True)
         longitude = Column(Float, nullable=True)
-        review = relationship("Review", backref="place", cascade="all, delete-orphan")
-        amenities = relationship("Amenity", secondary="place_amenity", back_populates="place_amenities", viewonly=False)
+        review = relationship(
+            'Review', backref="place", cascade="all, delete-orphan")
+        amenities = relationship(
+            'Amenity', secondary=place_amenity,
+            back_populates="place_amenities", viewonly=False)
 
     else:
         city_id = ""
@@ -80,7 +85,6 @@ class Place(BaseModel, Base):
             for item in my_dict.values():
                 if item.id in my_lst:
                     amenities_lst.append(item)
-                    my_lst.remove[item.id]
 
             return amenities_lst
 

@@ -37,8 +37,8 @@ class Place(BaseModel, Base):
         review = relationship(
             'Review', backref="place", cascade="all, delete-orphan")
         amenities = relationship(
-            'Amenity', secondary='place_amenity',
-            backref='places', viewonly=False)
+            'Amenity', secondary=place_amenity,
+            back_populates="place_amenities", viewonly=False)
 
     else:
         city_id = ""
@@ -92,4 +92,5 @@ class Place(BaseModel, Base):
         def amenities(self, obj=None):
             """setter method for amenities_ids"""
             if (obj and isinstance(obj, Amenity)):
-                self.amenity_ids.append(obj.id)
+                if obj.id not in self.amenity_ids:
+                    self.amenity_ids.append(obj.id)

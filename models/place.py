@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
             'Review', backref="place", cascade="all, delete-orphan")
         amenities = relationship(
             'Amenity', secondary=place_amenity,
-            back_populates="place_amenities", viewonly=False)
+            back_populates='place_amenities', viewonly=False)
 
     else:
         city_id = ""
@@ -52,10 +52,6 @@ class Place(BaseModel, Base):
         latitude = 0.0
         longitude = 0.0
         amenity_ids = []
-
-    def __init__(self, *args, **kwargs):
-        """Insantiates instance by calling parent class"""
-        super().__init__(*args, **kwargs)
 
     if models.my_env != 'db':
         @property
@@ -94,3 +90,7 @@ class Place(BaseModel, Base):
             if (obj and isinstance(obj, Amenity)):
                 if obj.id not in self.amenity_ids:
                     self.amenity_ids.append(obj.id)
+
+    def __init__(self, *args, **kwargs):
+        """Insantiates instance by calling parent class"""
+        super().__init__(*args, **kwargs)

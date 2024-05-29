@@ -43,7 +43,7 @@ class DBStorage:
 
             for obj in objs:
                 key = cls.__name__ + '.' + obj.id
-                value = obj.__dict__
+                value = obj
                 my_dict.update({key: value})
         else:
             for item in self.cls_lst:
@@ -51,7 +51,7 @@ class DBStorage:
 
                 for obj in objs:
                     key = cls.__name__ + '.' + obj.id
-                    value = obj.__dict__
+                    value = obj
                     my_dict.update({key: value})
 
         return (my_dict)

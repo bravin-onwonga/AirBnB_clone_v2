@@ -15,9 +15,12 @@ def do_deploy(archive_path):
     """
     Function to distributes archived file to the web server
     Extract and creates a symblic link to the extracted folder
+
+    Parameter:
+        - archive_path: path to archive
     Returns:
-        - True : success
-        - False : failure
+        - True: success
+        - False: failure
     """
     if not os.path.isfile(archive_path):
         return False

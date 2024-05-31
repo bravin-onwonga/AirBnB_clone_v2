@@ -13,9 +13,14 @@ env.user = 'ubuntu'
 
 
 def do_deploy(archive_path):
-    """Function to distributes archived file to the web server
-    archive_path: path to archive
-    Returns: True if a success; otherwise false
+    """
+    Function to distributes archived file to the web server
+
+    Parameter
+        archive_path: path to archive
+    Returns
+        - True if a success
+        - False if fail
     """
     if not os.path.isfile(archive_path):
         return False

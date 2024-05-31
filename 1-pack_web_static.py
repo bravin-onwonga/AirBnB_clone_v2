@@ -3,13 +3,10 @@
 Generates a .tgz archive from the contents of the web_static using do_pack
 """
 
-import os
-from fabric import task
+from fabric.api import local
 from datetime import datetime
 
-
-@task
-def do_pack(c):
+def do_pack():
     """
     Function that connect to the servers and archives the content
 
@@ -17,20 +14,17 @@ def do_pack(c):
         - path to file if successful
         - otherwise None
     """
-    c.local('sudo mkdir -p versions')
+    local('sudo mkdir -p versions')
 
     time_now = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = "versions/web_static_" + time_now + ".tgz"
-    res = c.local('sudo tar -czf {} web_static'.format(filename))
+    res = local('sudo tar -czf {} web_static'.format(filename))
 
-    if res.ok:
-        path = os.path.getsize(filename)
-        return (path)
+    if res.success:
+        return (filename)
     else:
         return None
 
 
 if __name__ == "__main__":
-    from fabric import Connection
-    c = Connection('localhost')
-    do_pack(c)
+    do_pack()

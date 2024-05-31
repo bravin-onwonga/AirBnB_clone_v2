@@ -17,10 +17,11 @@ def do_pack(c):
         - path to file if successful
         - otherwise None
     """
+    c.local('sudo mkdir -p versions')
 
     time_now = datetime.now().strftime("%Y%m%d%H%M%S")
     filename = "versions/web_static_" + time_now + ".tgz"
-    res = c.local('tar -czf {} web_static'.format(filename))
+    res = c.local('sudo tar -czf {} web_static'.format(filename))
 
     if res.ok:
         path = os.path.getsize(filename)

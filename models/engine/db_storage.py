@@ -2,7 +2,7 @@
 """ This model defines our CRUD operations on data in our db """
 
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import MetaData, create_engine
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -30,10 +30,11 @@ class DBStorage:
             username, passwd, host, dbName), pool_pre_ping=True)
 
         if os.getenv("HBNB_ENV") == "test":
-            tables = self.__engine.tablenames()
-
-            for table in tables:
+            metadata = MetaData()
+            metadata.reflect(bind=self.__engine)
+            for table in reversed(metadata.sorted_tables):
                 table.drop(self.__engine)
+
 
     def all(self, cls=None):
         """Creates a list all the objects based on classes passed"""

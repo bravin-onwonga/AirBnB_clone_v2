@@ -86,7 +86,7 @@ class DBStorage:
     def close(self):
         """Calls remove on session"""
         if self.__session:
-            self.__session.remove()
+            self.__session.close()
         else:
             Session.close()
         self.reload()

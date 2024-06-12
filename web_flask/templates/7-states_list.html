@@ -9,13 +9,13 @@
 
 <body>
   <h1>States</h1>
-  {% if states %}
-  {% for state in states.values() %}
   <ul>
+    {% if states %}
+    {% for state in states.values() %}
     <li>State: {{ state.id }}: <b>{{ state.name }}</b></li>
+    {% endfor %}
+    {% endif %}
   </ul>
-  {% endfor %}
-  {% endif %}
 </body>
 
 </html>

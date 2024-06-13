@@ -9,6 +9,12 @@ from models.city import City
 
 
 class State(BaseModel, Base):
+    """Representation of State"""
+
+    def __init__(self, *args, **kwargs):
+        """initializes city"""
+        super().__init__(*args, **kwargs)
+
     if models.my_env == "db":
         __tablename__ = 'states'
 
@@ -19,10 +25,6 @@ class State(BaseModel, Base):
     else:
         """ State class """
         name = ""
-
-    def __init__(self, *args, **kwargs):
-        """initializes city"""
-        super().__init__(*args, **kwargs)
 
     if os.getenv("HBNB_TYPE_STORAGE") != "db":
         @property

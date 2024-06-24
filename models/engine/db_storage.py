@@ -4,9 +4,9 @@
 import os
 from sqlalchemy import MetaData, create_engine
 from models.base_model import BaseModel, Base
-from models.user import User
 from models.state import State
 from models.city import City
+from models.user import User
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
@@ -30,10 +30,7 @@ class DBStorage:
             username, passwd, host, dbName), pool_pre_ping=True)
 
         if os.getenv("HBNB_ENV") == "test":
-            metadata = MetaData()
-            metadata.reflect(bind=self.__engine)
-            for table in reversed(metadata.sorted_tables):
-                table.drop(self.__engine)
+            Base.metadata.drop_all(self.__engine)
 
 
     def all(self, cls=None):
@@ -88,6 +85,3 @@ class DBStorage:
         """Calls remove on session"""
         if self.__session:
             self.__session.close()
-        else:
-            Session.close()
-        self.reload()
